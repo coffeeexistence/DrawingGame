@@ -15,16 +15,19 @@ const styles = StyleSheet.create({
   container: { marginTop: 50, width: '100%', height: '100%' },
 });
 
-const mapGameStateToScreen = (gameState: GameState) => {
+const mapGameStateToScreen = (
+  gameState: GameState,
+  game: typeof GameEngineConnector,
+) => {
   switch (gameState.screen) {
     case SCREENS.REQUEST_GAME_START:
-      return <RequestGameStart {...gameState} />;
+      return <RequestGameStart gameState={gameState} game={game} />;
     case SCREENS.REQUEST_ROUND_START:
-      return <RequestRoundStart {...gameState} />;
+      return <RequestRoundStart gameState={gameState} game={game} />;
     case SCREENS.ROUND_IN_PROGRESS:
-      return <RoundInProgress {...gameState} />;
+      return <RoundInProgress gameState={gameState} />;
     case SCREENS.REVEAL_CRITERIA:
-      return <RevealCriteria {...gameState} />;
+      return <RevealCriteria gameState={gameState} game={game} />;
     default:
       return null;
   }
@@ -49,12 +52,13 @@ export default class DrawingGame extends React.Component {
     const onSetGameState = gameState => this.setState({ gameState });
 
     const game = new GameEngineConnector(onSetGameState, ask);
+    // eslint-disable-next-line no-console
     game.start().catch(console.error);
   };
 
   render = () => (
     <View style={styles.container}>
-      {mapGameStateToScreen(this.state.gameState)}
+      {mapGameStateToScreen(this.state.gameState, this.game)}
       {this.state.ask && (
         <Button title={this.state.ask} onPress={this.state.resolveAsk} />
       )}

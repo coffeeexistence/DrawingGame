@@ -8,68 +8,20 @@ import criteria from './wordBank/criteria';
 import {
   type Challenge,
   type GameConfiguration,
-  type RequestGameStartState,
-  type RequestRoundStartState,
-  type RoundInProgressState,
-  type RevealCriteriaState,
   SCREENS,
   USER_EVENTS,
 } from './types';
+import {
+  requestGameStart,
+  requestRoundStart,
+  roundInProgress,
+  revealCriteria,
+} from './stateCreators';
 
 const selectRandom = array => array[Math.floor(Math.random() * array.length)];
 
-const requestGameStart = (): RequestGameStartState => ({
-  screen: SCREENS.REQUEST_GAME_START,
-});
-
-type RequestRoundStartParams = {
-  challenge: Challenge,
-  roundNumber: number,
-};
-
-const requestRoundStart = ({
-  challenge,
-  roundNumber,
-}: RequestRoundStartParams): RequestRoundStartState => ({
-  screen: SCREENS.REQUEST_ROUND_START,
-  challenge,
-  roundNumber,
-});
-
-type RoundInProgressParams = {
-  challenge: Challenge,
-  secondsLeft: number,
-  roundNumber: number,
-};
-
-const roundInProgress = ({
-  challenge,
-  secondsLeft,
-  roundNumber,
-}: RoundInProgressParams): RoundInProgressState => ({
-  screen: SCREENS.ROUND_IN_PROGRESS,
-  challenge,
-  roundNumber,
-  secondsLeft,
-});
-
-type RevealCriteriaParams = {
-  challenge: Challenge,
-  roundNumber: number,
-};
-
-const revealCriteria = ({
-  challenge,
-  roundNumber,
-}: RevealCriteriaParams): RevealCriteriaState => ({
-  screen: SCREENS.REVEAL_CRITERIA,
-  challenge,
-  roundNumber,
-});
-
 type Screen = $Keys<typeof SCREENS>;
 type UserEvent = $Keys<typeof USER_EVENTS>;
-
 type GameState = {
   screen: Screen,
 };

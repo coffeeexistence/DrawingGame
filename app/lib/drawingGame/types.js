@@ -1,6 +1,13 @@
 // @flow
 
-export const SCREENS = {
+type Screens = {
+  REQUEST_GAME_START: 'REQUEST_GAME_START',
+  REQUEST_ROUND_START: 'REQUEST_ROUND_START',
+  ROUND_IN_PROGRESS: 'ROUND_IN_PROGRESS',
+  REVEAL_CRITERIA: 'REVEAL_CRITERIA',
+};
+
+export const SCREENS: Screens = {
   REQUEST_GAME_START: 'REQUEST_GAME_START',
   REQUEST_ROUND_START: 'REQUEST_ROUND_START',
   ROUND_IN_PROGRESS: 'ROUND_IN_PROGRESS',
@@ -49,3 +56,9 @@ export type RevealCriteriaState = {
   challenge: Challenge,
   roundNumber: number,
 };
+
+export type GameState =
+  | RequestGameStartState
+  | RequestRoundStartState
+  | RoundInProgressState
+  | RevealCriteriaState;

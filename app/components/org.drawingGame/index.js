@@ -1,19 +1,40 @@
 // @flow
 
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, View, Button } from 'react-native';
 import Q from 'q';
-import GameEngineConnector from '../../lib/drawingGame';
+import GameEngineConnector from 'app/lib/drawingGame';
+import { SCREENS, type GameState } from 'app/lib/drawingGame/types';
+
+import RequestGameStart from './screens/requestGameStart';
+import RequestRoundStart from './screens/requestRoundStart';
+import RoundInProgress from './screens/roundInProgress';
+import RevealCriteria from './screens/revealCriteria';
 
 const styles = StyleSheet.create({
   container: { marginTop: 50, width: '100%', height: '100%' },
 });
 
+const mapGameStateToScreen = (gameState: GameState) => {
+  switch (gameState.screen) {
+    case SCREENS.REQUEST_GAME_START:
+      return <RequestGameStart {...gameState} />;
+    case SCREENS.REQUEST_ROUND_START:
+      return <RequestRoundStart {...gameState} />;
+    case SCREENS.ROUND_IN_PROGRESS:
+      return <RoundInProgress {...gameState} />;
+    case SCREENS.REVEAL_CRITERIA:
+      return <RevealCriteria {...gameState} />;
+    default:
+      return null;
+  }
+};
+
 export default class DrawingGame extends React.Component {
   state = {
     ask: 'initial ask state',
     resolveAsk: () => {},
-    gameState: {},
+    gameState: { screen: SCREENS.REQUEST_GAME_START },
   };
 
   componentDidMount = () => {
@@ -33,7 +54,7 @@ export default class DrawingGame extends React.Component {
 
   render = () => (
     <View style={styles.container}>
-      <Text>{JSON.stringify(this.state.gameState)}</Text>
+      {mapGameStateToScreen(this.state.gameState)}
       {this.state.ask && (
         <Button title={this.state.ask} onPress={this.state.resolveAsk} />
       )}

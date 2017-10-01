@@ -2,96 +2,66 @@
 
 import Rx, { Observable as $ } from 'rxjs';
 import repeatPromiseSequential from '../repeatPromiseSequential';
-import nouns from './nouns';
-import adjectives from './adjectives';
-import criteria from './criteria';
+import nouns from './wordBank/nouns';
+import adjectives from './wordBank/adjectives';
+import criteria from './wordBank/criteria';
+import {
+  type Challenge,
+  type GameConfiguration,
+  type RequestGameStartState,
+  type RequestRoundStartState,
+  type RoundInProgressState,
+  type RevealCriteriaState,
+  SCREENS,
+  USER_EVENTS,
+} from './types';
 
 const selectRandom = array => array[Math.floor(Math.random() * array.length)];
 
-type Player = {
-  score: number,
-};
-
-type GameConfiguration = {
-  players: Player[],
-  rounds: number,
-};
-
-type Challenge = {
-  criteria: string,
-  challengeDescription: string,
-};
-
-const SCREENS = {
-  REQUEST_GAME_START: 'REQUEST_GAME_START',
-  REQUEST_ROUND_START: 'REQUEST_ROUND_START',
-  ROUND_IN_PROGRESS: 'ROUND_IN_PROGRESS',
-  REVEAL_CRITERIA: 'REVEAL_CRITERIA',
-};
-
-const USER_EVENTS = {
-  USER_STARTED_GAME: 'USER_STARTED_GAME',
-  USER_STARTED_ROUND: 'USER_STARTED_ROUND',
-  USER_ENDED_ROUND: 'USER_ENDED_ROUND',
-};
-
-type RequestGameStartAction = () => {
-  screen: typeof SCREENS.REQUEST_GAME_START,
-};
-
-type RequestRoundStartAction = ({
-  challenge: Challenge,
-  roundNumber: number,
-}) => {
-  screen: typeof SCREENS.REQUEST_ROUND_START,
-  challenge: Challenge,
-  roundNumber: number,
-};
-
-type RoundInProgressAction = ({
-  challenge: Challenge,
-  secondsLeft: number,
-  roundNumber: number,
-}) => {
-  screen: typeof SCREENS.ROUND_IN_PROGRESS,
-  challenge: Challenge,
-  roundNumber: number,
-  secondsLeft: number,
-};
-
-type RevealCriteriaAction = ({
-  challenge: Challenge,
-  roundNumber: number,
-}) => {
-  screen: typeof SCREENS.REVEAL_CRITERIA,
-  challenge: Challenge,
-  roundNumber: number,
-};
-
-const requestGameStart: RequestGameStartAction = () => ({
+const requestGameStart = (): RequestGameStartState => ({
   screen: SCREENS.REQUEST_GAME_START,
 });
-const requestRoundStart: RequestRoundStartAction = ({
+
+type RequestRoundStartParams = {
+  challenge: Challenge,
+  roundNumber: number,
+};
+
+const requestRoundStart = ({
   challenge,
   roundNumber,
-}) => ({
+}: RequestRoundStartParams): RequestRoundStartState => ({
   screen: SCREENS.REQUEST_ROUND_START,
   challenge,
   roundNumber,
 });
 
-const roundInProgress: RoundInProgressAction = ({
+type RoundInProgressParams = {
+  challenge: Challenge,
+  secondsLeft: number,
+  roundNumber: number,
+};
+
+const roundInProgress = ({
   challenge,
   secondsLeft,
   roundNumber,
-}) => ({
+}: RoundInProgressParams): RoundInProgressState => ({
   screen: SCREENS.ROUND_IN_PROGRESS,
   challenge,
   roundNumber,
   secondsLeft,
 });
 
-const revealCriteria: RevealCriteriaAction = ({ challenge, roundNumber }) => ({
+type RevealCriteriaParams = {
+  challenge: Challenge,
+  roundNumber: number,
+};
+
+const revealCriteria = ({
+  challenge,
+  roundNumber,
+}: RevealCriteriaParams): RevealCriteriaState => ({
   screen: SCREENS.REVEAL_CRITERIA,
   challenge,
   roundNumber,

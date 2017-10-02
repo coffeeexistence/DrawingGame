@@ -5,7 +5,9 @@ import {
   // type RequestGameStartState,
   USER_EVENTS,
 } from 'app/lib/drawingGame/types';
-import { View, Button } from 'react-native';
+import Button from 'app/components/atm.button';
+import Screen from 'app/components/atm.screen';
+import BottomActions from 'app/components/atm.bottomActions';
 
 export default class RequestGameStart extends React.Component {
   props: { game: any };
@@ -15,8 +17,10 @@ export default class RequestGameStart extends React.Component {
   };
 
   render = () => (
-    <View>
-      <Button title="Start Round" onPress={this.startRound} />
-    </View>
+    <Screen>
+      <BottomActions>
+        <Button title="New Game" onPress={this.startRound} />
+      </BottomActions>
+    </Screen>
   );
 }

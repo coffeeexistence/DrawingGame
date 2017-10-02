@@ -4,7 +4,8 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  challengeDescriptionText: { fontSize: 16, color: '#333' },
+  titleText: { fontSize: 30, color: '#333' },
+  challengeDescriptionText: { fontSize: 26, color: '#333' },
   container: { paddingTop: 10, paddingBottom: 10 },
 });
 

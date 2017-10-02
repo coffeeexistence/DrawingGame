@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { StyleSheet, View, Button } from 'react-native';
+import { StyleSheet, View, StatusBar } from 'react-native';
 import Q from 'q';
 import GameEngineConnector from 'app/lib/drawingGame';
 import { SCREENS, type GameState } from 'app/lib/drawingGame/types';
@@ -60,6 +60,7 @@ export default class DrawingGame extends React.Component {
 
   render = () => (
     <View style={styles.container}>
+      <StatusBar hidden={true} />
       {mapGameStateToScreen(this.state.gameState, this.game)}
     </View>
   );

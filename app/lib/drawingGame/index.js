@@ -54,7 +54,7 @@ const roundCountdown = (
   });
 
 const generateChallenge = (): Challenge => ({
-  criteria: `Winner is: ${selectRandom(criteria)}.`,
+  criteria: `${selectRandom(criteria)}.`,
   challengeDescription: `${selectRandom(adjectives)} ${selectRandom(nouns)}.`,
 });
 

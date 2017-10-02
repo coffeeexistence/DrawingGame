@@ -3,17 +3,19 @@
 import React from 'react';
 import { type RoundInProgressState } from 'app/lib/drawingGame/types';
 import { Text, View } from 'react-native';
+import ChallengeDescription from 'app/components/atm.challengeDescription';
 
-export default ({
-  screen,
-  challenge,
-  roundNumber,
-  secondsLeft,
-}: RoundInProgressState) => (
-  <View>
-    <Text>Screen: {screen}</Text>
-    <Text>challenge: {JSON.stringify(challenge)}</Text>
-    <Text>roundNumber: {roundNumber}</Text>
-    <Text>secondsLeft: {secondsLeft}</Text>
-  </View>
-);
+type Props = { gameState: RoundInProgressState };
+
+export default ({ gameState }: Props) => {
+  const { challenge, roundNumber } = gameState;
+  return (
+    <View>
+      <Text>Round {roundNumber}</Text>
+      <ChallengeDescription
+        challengeDescription={challenge.challengeDescription}
+      />
+      <Text>{gameState.secondsLeft} seconds remaining.</Text>
+    </View>
+  );
+};

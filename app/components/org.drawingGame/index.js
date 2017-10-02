@@ -12,7 +12,7 @@ import RoundInProgress from './screens/roundInProgress';
 import RevealCriteria from './screens/revealCriteria';
 
 const styles = StyleSheet.create({
-  container: { marginTop: 50, width: '100%', height: '100%' },
+  container: { width: '100%', height: '100%', padding: 20, paddingTop: 30 },
 });
 
 const mapGameStateToScreen = (
@@ -51,17 +51,16 @@ export default class DrawingGame extends React.Component {
 
     const onSetGameState = gameState => this.setState({ gameState });
 
-    const game = new GameEngineConnector(onSetGameState, ask);
+    this.game = new GameEngineConnector(onSetGameState, ask);
     // eslint-disable-next-line no-console
-    game.start().catch(console.error);
+    this.game.start().catch(console.error);
   };
+
+  game: any;
 
   render = () => (
     <View style={styles.container}>
       {mapGameStateToScreen(this.state.gameState, this.game)}
-      {this.state.ask && (
-        <Button title={this.state.ask} onPress={this.state.resolveAsk} />
-      )}
     </View>
   );
 }

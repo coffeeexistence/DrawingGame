@@ -4,7 +4,7 @@ import Rx, { Observable as $ } from 'rxjs';
 import repeatPromiseSequential from '../repeatPromiseSequential';
 import nouns from './wordBank/nouns';
 import adjectives from './wordBank/adjectives';
-import criteria from './wordBank/criteria';
+import criterias from './wordBank/criteria';
 import {
   type Challenge,
   type GameConfiguration,
@@ -18,6 +18,7 @@ import {
   revealCriteria,
 } from './stateCreators';
 
+const capitalize = s => s[0].toUpperCase() + s.slice(1);
 const selectRandom = array => array[Math.floor(Math.random() * array.length)];
 
 type Screen = $Keys<typeof SCREENS>;
@@ -53,10 +54,13 @@ const roundCountdown = (
     setRoundState();
   });
 
-const generateChallenge = (): Challenge => ({
-  criteria: `${selectRandom(criteria)}.`,
-  challengeDescription: `${selectRandom(adjectives)} ${selectRandom(nouns)}.`,
-});
+const generateChallenge = (): Challenge => {
+  const adjective = selectRandom(adjectives);
+  const noun = selectRandom(nouns);
+  const challengeDescription = capitalize(`${noun} ${adjective}.`);
+  const criteria = `${selectRandom(criterias)}.`;
+  return { criteria, challengeDescription };
+};
 
 const doRound = async (roundNumber, { take, setGameState }) => {
   const challenge = generateChallenge();

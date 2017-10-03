@@ -9,10 +9,9 @@ const styles = StyleSheet.create({
     padding: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: '30%',
   },
-  title: { color: '#bbb', fontSize: 30 },
-  text: { color: '#bbb', fontSize: 125 },
+  title: { color: '#888', fontSize: 30 },
+  text: { color: '#888', fontSize: 125 },
 });
 
 type Props = { secondsLeft: number };

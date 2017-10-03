@@ -6,8 +6,8 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 const styles = StyleSheet.create({
   text: { fontSize: 26, color: 'white' },
   button: {
-    backgroundColor: '#255F85',
-    borderRadius: 7,
+    backgroundColor: '#B58DD6',
+    borderRadius: 3,
     alignItems: 'center',
     paddingLeft: 10,
     paddingRight: 10,

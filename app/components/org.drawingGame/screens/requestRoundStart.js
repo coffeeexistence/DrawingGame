@@ -11,6 +11,7 @@ import Button from 'app/components/atm.button';
 import Screen from 'app/components/atm.screen';
 import BottomActions from 'app/components/atm.bottomActions';
 import RoundBubble from 'app/components/atm.roundBubble';
+import FullRow from 'app/components/atm.FullRow';
 
 export default class RequestRoundStart extends React.Component {
   props: { gameState: RequestRoundStartState, game: any };
@@ -21,20 +22,14 @@ export default class RequestRoundStart extends React.Component {
     const { roundNumber, challenge } = this.props.gameState;
     return (
       <Screen>
-        <View
-          style={{
-            flexDirection: 'row',
-            width: '100%',
-            minHeight: 100,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
+        <FullRow center>
           <RoundBubble roundNumber={roundNumber} />
+        </FullRow>
+        <FullRow vcenter hcenter expand>
           <ChallengeDescription
             challengeDescription={challenge.challengeDescription}
           />
-        </View>
+        </FullRow>
         <BottomActions>
           <Button title="Start Round" onPress={this.startRound} />
         </BottomActions>

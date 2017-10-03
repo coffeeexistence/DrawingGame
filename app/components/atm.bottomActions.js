@@ -5,12 +5,12 @@ import { View, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    padding: 10,
+    flexDirection: 'row',
+    flex: 0,
+    alignItems: 'flex-end',
+    paddingTop: 20,
     paddingBottom: 20,
+    backgroundColor: '#444',
   },
 });
 

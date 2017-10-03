@@ -4,19 +4,12 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  header: { fontSize: 30, color: '#444' },
-  subheader: { fontSize: 26, color: '#444' },
-  divider: {
-    backgroundColor: '#ccc',
-    width: '75%',
-    height: 1.5,
-    marginTop: 5,
-    marginBottom: 5,
-  },
+  header: { fontSize: 30, color: '#999' },
+  subheader: { fontSize: 30, color: '#D7C2E8' },
   container: {
-    flex: 1,
-    alignItems: 'center',
     flexDirection: 'column',
+    paddingRight: 10,
+    paddingLeft: 10,
   },
 });
 
@@ -28,7 +21,6 @@ type Props = {
 export default ({ header, subheader }: Props) => (
   <View style={styles.container}>
     <Text style={styles.header}>{header}</Text>
-    <View style={styles.divider} />
     <Text style={styles.subheader}>{subheader}</Text>
   </View>
 );

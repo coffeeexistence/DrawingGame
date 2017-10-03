@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { View } from 'react-native';
+import { View, Dimensions } from 'react-native';
 import {
   type RevealCriteriaState,
   USER_EVENTS,
@@ -12,6 +12,7 @@ import Screen from 'app/components/atm.screen';
 import BottomActions from 'app/components/atm.bottomActions';
 import RoundBubble from 'app/components/atm.roundBubble';
 import HeaderWithSubheader from 'app/components/atm.headerWithSubheader';
+import FullRow from 'app/components/atm.FullRow';
 
 export default class RevealCriteria extends React.Component {
   props: { gameState: RevealCriteriaState, game: any };
@@ -22,28 +23,23 @@ export default class RevealCriteria extends React.Component {
     const { roundNumber, challenge } = this.props.gameState;
     return (
       <Screen>
-        <View
-          style={{
-            flexDirection: 'row',
-            width: '100%',
-            minHeight: 100,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
+        <FullRow center>
           <RoundBubble roundNumber={roundNumber} />
-          <ChallengeDescription
-            challengeDescription={challenge.challengeDescription}
-          />
-        </View>
-
-        <BottomActions>
+          <View flex={1} maxWidth={Dimensions.get('screen').width / 2}>
+            <ChallengeDescription
+              challengeDescription={challenge.challengeDescription}
+            />
+          </View>
+        </FullRow>
+        <FullRow vcenter hcenter expand>
           <HeaderWithSubheader
             header={'Winner is:'}
             subheader={challenge.criteria}
           />
-          <View height={15} />
-          <Button title="Tap when winner selected" onPress={this.endRound} />
+        </FullRow>
+
+        <BottomActions>
+          <Button title="Winner selected" onPress={this.endRound} />
         </BottomActions>
       </Screen>
     );

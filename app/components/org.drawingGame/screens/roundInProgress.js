@@ -6,7 +6,6 @@ import { View, Dimensions } from 'react-native';
 import ChallengeDescription from 'app/components/atm.challengeDescription';
 import Screen from 'app/components/atm.screen';
 import Countdown from 'app/components/atm.countdown';
-import BottomActions from 'app/components/atm.bottomActions';
 import RoundBubble from 'app/components/atm.roundBubble';
 import FullRow from 'app/components/atm.FullRow';
 

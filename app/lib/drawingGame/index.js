@@ -1,91 +1,8 @@
 // @flow
 
-import Rx, { Observable as $ } from 'rxjs';
-import repeatPromiseSequential from '../repeatPromiseSequential';
-import nouns from './wordBank/nouns';
-import adjectives from './wordBank/adjectives';
-import criterias from './wordBank/criteria';
-import {
-  type Challenge,
-  type GameConfiguration,
-  SCREENS,
-  USER_EVENTS,
-} from './types';
-import {
-  requestGameStart,
-  requestRoundStart,
-  roundInProgress,
-  revealCriteria,
-} from './stateCreators';
-
-const capitalize = s => s[0].toUpperCase() + s.slice(1);
-const selectRandom = array => array[Math.floor(Math.random() * array.length)];
-
-type Screen = $Keys<typeof SCREENS>;
-type UserEvent = $Keys<typeof USER_EVENTS>;
-type GameState = {
-  screen: Screen,
-};
-
-const gameConfig: GameConfiguration = {
-  players: [],
-  rounds: 7,
-};
-
-const roundCountdown = (
-  { countdownLength, roundNumber, challenge },
-  { setGameState },
-) =>
-  new Promise(resolve => {
-    let secondsLeft = countdownLength;
-
-    const setRoundState = () =>
-      setGameState(roundInProgress({ challenge, secondsLeft, roundNumber }));
-
-    const nextSecond = () => {
-      secondsLeft -= 1;
-      setRoundState();
-    };
-
-    $.interval(1000)
-      .take(countdownLength)
-      .subscribe(nextSecond, null, resolve);
-
-    setRoundState();
-  });
-
-const generateChallenge = (): Challenge => {
-  const adjective = selectRandom(adjectives);
-  const noun = selectRandom(nouns);
-  const challengeDescription = capitalize(`${noun} ${adjective}.`);
-  const criteria = `${selectRandom(criterias)}.`;
-  return { criteria, challengeDescription };
-};
-
-const doRound = async (roundNumber, { take, setGameState }) => {
-  const challenge = generateChallenge();
-  setGameState(requestRoundStart({ challenge, roundNumber }));
-  await take('USER_STARTED_ROUND');
-  await roundCountdown(
-    { countdownLength: 5, roundNumber, challenge },
-    { take, setGameState },
-  );
-  setGameState(revealCriteria({ challenge, roundNumber }));
-  await take('USER_ENDED_ROUND');
-};
-
-const startGame = async (config: GameConfiguration, utils) => {
-  await repeatPromiseSequential(
-    roundCount => doRound(roundCount, utils),
-    config.rounds,
-  );
-};
-
-const play = async ({ take, setGameState }) => {
-  setGameState(requestGameStart());
-  await take('USER_STARTED_GAME');
-  await startGame(gameConfig, { take, setGameState });
-};
+import Rx from 'rxjs';
+import { type GameState, type UserEvent } from './types';
+import game from './game';
 
 export default class GameEngineConnector {
   fromUI$ = new Rx.Subject();
@@ -95,20 +12,20 @@ export default class GameEngineConnector {
     take: UserEvent => Promise<*>,
   };
 
-  constructor(onGameStateChanged: Object => void, onAsk: any => Promise<*>) {
-    this.gameState$.subscribe(onGameStateChanged);
+  take = (str: string) =>
+    new Promise(resolve => {
+      this.fromUI$
+        .filter(event => str === event)
+        .take(1)
+        .do(resolve)
+        .subscribe();
+    });
 
-    const setGameState = state => this.gameState$.next(state);
-    const take = str =>
-      new Promise(resolve => {
-        this.fromUI$
-          .filter(event => str === event)
-          .take(1)
-          .do(resolve)
-          .subscribe();
-        onAsk(`Fire ${str}`).then(() => this.fromUI$.next(str));
-      });
-    this.utils = { setGameState, take };
+  setGameState = (state: GameState) => this.gameState$.next(state);
+
+  constructor(onGameStateChanged: Object => void, _onAsk: any => Promise<*>) {
+    this.gameState$.subscribe(onGameStateChanged);
+    this.utils = { setGameState: this.setGameState, take: this.take };
   }
 
   sendEvent = (event: Object) => {
@@ -116,6 +33,6 @@ export default class GameEngineConnector {
   };
 
   start = async () => {
-    await play(this.utils);
+    await game.play(this.utils);
   };
 }

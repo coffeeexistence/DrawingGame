@@ -62,3 +62,6 @@ export type GameState =
   | RequestRoundStartState
   | RoundInProgressState
   | RevealCriteriaState;
+
+export type Screen = $Keys<typeof SCREENS>;
+export type UserEvent = $Keys<typeof USER_EVENTS>;

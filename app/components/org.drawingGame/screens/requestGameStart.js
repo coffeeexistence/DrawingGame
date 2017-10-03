@@ -1,6 +1,7 @@
 // @flow
 
 import React from 'react';
+import { View } from 'react-native';
 import {
   // type RequestGameStartState,
   USER_EVENTS,
@@ -18,6 +19,7 @@ export default class RequestGameStart extends React.Component {
 
   render = () => (
     <Screen>
+      <View flex={1} />
       <BottomActions>
         <Button title="New Game" onPress={this.startRound} />
       </BottomActions>
